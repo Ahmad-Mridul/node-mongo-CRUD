@@ -7,7 +7,18 @@ function App() {
     const email = e.target.email.value;
     const user = {name,email};
     console.log(user);
-    
+    fetch("http://localhost:3000/users",{
+      method:"POST",
+      headers:{
+        'content-type':'application/json'
+      },
+      body:JSON.stringify(user)
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data);
+      
+    })
   }
   return (
     <>
@@ -15,7 +26,7 @@ function App() {
       <form onSubmit={handleForm}>
         <input type="text" name="name" id="" /><br />
         <input type="email" name="email" id="" /><br />
-        <button style={{background:"red",marginTop:"10px"}}>submit</button>
+        <input type="submit" value="add user" />
       </form>
     </>
   )
