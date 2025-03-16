@@ -1,22 +1,30 @@
-import { useLoaderData } from "react-router";
+import { useState } from "react";
+import { Link, useLoaderData } from "react-router";
 
 const Users = () => {
-    const users = useLoaderData();
-    console.log(users);
-    const handleDelete = (_id) =>{
-        fetch(`http://localhost:3000/users/${_id}`,{
+    const loadedCustomers = useLoaderData();
+    const [customers,setCustomers] = useState(loadedCustomers);
+    const handleDelete = _id => {
+        console.log(_id);
+        fetch(`http://localhost:3000/customers/${_id}`,{
             method:"DELETE"
         })
-        .then(response=>response.json())
-        .them(data =>{
+        .then(response => response.json())
+        .then(data => {
             console.log(data);
-            
-        })
+            if(data.deletedCount > 0) {
+                const remaining = customers.filter(customer => customer._id!=_id);
+                setCustomers(remaining);
+            }
+        });
     }
+    
     return (
         <div>
             {
-                users.map((user) =><p key={user._id}>{user.name}:{user.email} <button onClick={()=>handleDelete(user._id)}>X</button></p>)
+                customers.map((customer) =><p key={customer._id}>{customer.name}:{customer.email}:{customer._id} 
+                <Link to={`/customers/${customer._id}`}><button>update</button></Link>
+                <button onClick={()=>handleDelete(customer._id)}>X</button></p>)
             }
         </div>
     );

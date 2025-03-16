@@ -7,10 +7,10 @@ function App() {
     const email = e.target.email.value;
     const user = {name,email};
     console.log(user);
-    fetch("http://localhost:3000/users",{
+    fetch("http://localhost:3000/customers",{
       method:"POST",
       headers:{
-        'content-type':'application/json'
+        'Content-Type':'application/json'
       },
       body:JSON.stringify(user)
     })
